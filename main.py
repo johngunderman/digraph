@@ -1,5 +1,8 @@
 from flask import Flask, render_template
-app = Flask(__name__)
+#from flask_bootstrap import Bootstrap
+
+app = Flask(__name__, static_url_path="/static")
+#Bootstrap(app)
 app.config['DEBUG'] = True
 
 # Note: We don't need to call run() since our application is embedded within

@@ -1,0 +1,18 @@
+Rough notes on basic schema defs. 
+
+The Graph schema, detailing the dependencies in the directed graph.
+
+NodeID
+ChildNodeID
+
+Where multiple children can be denoted by multiple entries in the datastore.
+
+There will also be a node metadata table with info such as name keyed off nodeid.
+
+
+TaskId
+Task metadata
+
+---
+Task Id
+Task Stage

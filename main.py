@@ -15,19 +15,19 @@ def handle_index():
 
 @app.route('/task')
 def handle_task():
-    pass
+    return render_template("task.html")
 
-@app.route('/node')
-def handle_node():
-    pass
+@app.route('/workflow')
+def handle_workflow():
+    return render_template("workflow.html")
 
 @app.route('/tasks')
 def handle_tasks():
-    pass
+    return render_template("tasks.html")
 
-@app.route('/nodes')
-def handle_nodes():
-    pass
+@app.route('/workflows')
+def handle_workflows():
+    return render_template("workflows.html")
 
 
 @app.errorhandler(404)

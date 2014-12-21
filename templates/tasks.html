@@ -1,0 +1,25 @@
+{% extends "main.template.html" %}
+
+{% block menuitems %}
+<li><a href="/">Home</a></li>
+<li class="active"><a href="/tasks">Tasks</a></li>
+<li><a href="/workflows">Workflows</a></li>
+{% endblock %}
+
+{% block content %}
+<h1>Tasks</h1>
+<div class="align-right">
+  <button type="button" class="btn btn-default btn-lg" onclick='location.href="/task"'>
+  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+  New Task
+  </button>
+</div>
+<div class="panel panel-default">
+<!-- Default panel contents -->
+<div class="panel-heading">Panel heading</div>
+
+<!-- Table -->
+<table class="table">
+</table>
+</div>
+{% endblock %}

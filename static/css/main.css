@@ -6,6 +6,10 @@ body {
   text-align: center;
 }
 
+.header-title {
+    align: center;
+}
+
 .main-content {
     width: 400px;
     float: center;
@@ -13,7 +17,7 @@ body {
     margin-right: auto;
 }
 
-.align-right {
+.button-right-of-header {
     text-align: right;
 }
 

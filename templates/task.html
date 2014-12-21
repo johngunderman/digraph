@@ -7,5 +7,30 @@
 {% endblock %}
 
 {% block content %}
+
 <h1>Create New Task</h1>
+<br>
+<div class="main-content">
+<div class="input-group align-left">
+  <span class="input-group-addon">Name:</span>
+  <input type="text" class="form-control" placeholder="Name of the Task">
+</div>
+<br>
+<div class="dropdown align-left">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+  Workflow
+  <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+  </ul>
+</div> <!-- end dropdown -->
+<br>
+<div class="input-group align-left">
+  <input type="text" class="form-control" placeholder="Extra Task Info">
+</div>
+</div> <!-- end main-content -->
 {% endblock %}

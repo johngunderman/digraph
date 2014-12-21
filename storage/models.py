@@ -15,6 +15,7 @@ class Workflow(db.Model):
   components = db.ListProperty(int)
 
 class Task(db.Model):
+  name = db.StringProperty(required=True, int)
   active_nodes = db.ListProperty(required=True, int)
-  metadata = db.StringProperty(required=True)
+  metadata = db.StringProperty()
 

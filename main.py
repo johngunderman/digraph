@@ -1,12 +1,13 @@
 from flask import Flask, render_template
-#from flask_bootstrap import Bootstrap
+from google.appengine.ext import db
 
-app = Flask(__name__, static_url_path="/static")
-#Bootstrap(app)
-app.config['DEBUG'] = True
+from storage import models
 
 # Note: We don't need to call run() since our application is embedded within
 # the App Engine WSGI application server.
+app = Flask(__name__, static_url_path="/static")
+app.config['DEBUG'] = True
+
 
 @app.route('/')
 def handle_index():
@@ -23,7 +24,8 @@ def handle_workflow():
 
 @app.route('/tasks')
 def handle_tasks():
-    return render_template("tasks.html")
+    tasks = db.GqlQuery("SELECT * FROM Task")
+    return render_template("tasks.html", tasks=tasks)
 
 @app.route('/workflows')
 def handle_workflows():

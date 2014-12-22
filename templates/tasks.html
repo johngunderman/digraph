@@ -25,6 +25,12 @@
 
 <!-- Table -->
 <table class="table">
+  {% for task in tasks %}
+  <tr>
+    <td>{{ task.name }}</td>
+    <td>{{ task.metadata }}</td>
+  </tr>
+  {% endfor %}
 </table>
 </div>
 {% endblock %}

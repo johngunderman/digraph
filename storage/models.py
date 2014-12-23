@@ -1,21 +1,23 @@
 import datetime
-from google.appengine.ext import db
+from google.appengine.ext import ndb
 from google.appengine.api import users
 
 
-class Node(db.Model):
-  children = db.ListProperty(int)
-  parent_node = db.SelfReferenceProperty()
-  name = db.StringProperty(required=True)
-  description = db.StringProperty(required=True)
+class Node(ndb.Model):
+  children = ndb.ListProperty(int)
+  workflow = ndb.StringProperty()
+  parent_node = ndb.SelfReferenceProperty()
+  name = ndb.StringProperty(required=True)
+  description = ndb.StringProperty(required=True)
 
-class Workflow(db.Model):
-  name = db.StringProperty()
-  description = db.StringProperty()
-  components = db.ListProperty(int)
+class Workflow(ndb.Model):
+  name = ndb.StringProperty()
+  description = ndb.StringProperty()
+  components = ndb.ListProperty(int)
 
-class Task(db.Model):
-  name = db.StringProperty(int, required=True)
-  active_nodes = db.ListProperty(int, required=True)
-  metadata = db.StringProperty()
+class Task(ndb.Model):
+  name = ndb.StringProperty(int, required=True)
+  workflow = ndb.StringProperty()
+  active_nodes = ndb.ListProperty(int, required=True)
+  metadata = ndb.StringProperty()
 

@@ -1,7 +1,6 @@
-from flask import Flask, render_template
-from google.appengine.ext import db
+from flask import Flask, render_template, request
 
-from storage import models
+from storage.models import Node, Workflow, Task
 
 # Note: We don't need to call run() since our application is embedded within
 # the App Engine WSGI application server.
@@ -24,7 +23,7 @@ def handle_workflow():
 
 @app.route('/tasks', methods = ['GET'])
 def handle_tasks():
-    tasks = db.GqlQuery("SELECT * FROM Task")
+    tasks = Task.query().fetch(100)
     return render_template("tasks.html", tasks=tasks)
 
 @app.route('/workflows', methods = ['GET'])
@@ -34,12 +33,19 @@ def handle_workflows():
 @app.route('/task', methods = ['POST'])
 def handle_task_post():
     #TODO: needs to check for existence in request
-    task = models.Task()
-    task.name = request.post['name']
-    task.workflow = request.post['workflow']
-    task.metadata = request.post['extra_info']
-    nodes = Node.query(Node.workflow == task.workflow, Node.parent_node == None)
-    #TODO: assert that there is only one node with no parent
+    task = Task()
+    task.name = request.form['name']
+    task.workflow = request.form['workflow']
+    task.metadata = request.form['extra_info']
+    nodes = Node.query(Node.workflow == task.workflow,
+                       Node.parent_node == None).fetch(100)
+    # make these return an actual error code
+    if len(nodes) < 1:
+        return "No valid root nodes found for this workflow." \
+            + " Are you sure this workflow exists?"
+    if len(nodes) > 1:
+        return "More than one root node exists for this workflow." \
+            + " Something has gone terribly wrong somewhere..."
     root_node = nodes[0]
     task.active_nodes.append(root_node)
     #TODO: figure out what the return value is here and check it

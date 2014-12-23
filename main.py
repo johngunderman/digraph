@@ -32,15 +32,19 @@ def handle_workflows():
     return render_template("workflows.html")
 
 @app.route('/task', methods = ['POST'])
-def handle_task():
+def handle_task_post():
     #TODO: needs to check for existence in request
     task = models.Task()
     task.name = request.post['name']
     task.workflow = request.post['workflow']
     task.metadata = request.post['extra_info']
-    query_string = ("SELECT * FROM Node WHERE Node.workflow = @1" +
-                    "AND Node.parent_node = null ")
-
+    nodes = Node.query(Node.workflow == task.workflow, Node.parent_node == None)
+    #TODO: assert that there is only one node with no parent
+    root_node = nodes[0]
+    task.active_nodes.append(root_node)
+    #TODO: figure out what the return value is here and check it
+    task.put()
+    return ""
 
 
 @app.errorhandler(404)

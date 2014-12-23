@@ -8,4 +8,27 @@
 
 {% block content %}
 <h1>Create New Workflow</h1>
+<br>
+<div class="main-content">
+<div class="input-group align-left">
+  <span class="input-group-addon">Name:</span>
+  <input type="text" id="name" class="form-control" placeholder="Name of the Task">
+</div>
+<br>
+<div class="input-group align-left">
+  <span class="input-group-addon">Description:</span>
+  <input type="text" id="description" class="form-control"
+  placeholder="Description of the Task">
+</div>
+<br>
+FLOW EDITOR WILL GO HERE.
+<br>
+<br>
+<div>
+  <button type="button" class="btn btn-default btn-lg" onclick="createTask()">
+  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+  Create!
+  </button>
+</div>
+</div> <!-- end main-content -->
 {% endblock %}

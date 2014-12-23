@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash
 
 from storage.models import Node, Workflow, Task
 
@@ -6,6 +6,8 @@ from storage.models import Node, Workflow, Task
 # the App Engine WSGI application server.
 app = Flask(__name__, static_url_path="/static")
 app.config['DEBUG'] = True
+#TODO: configure this via flag
+app.secret_key = 'test-secret'
 
 
 @app.route('/', methods = ['GET'])
@@ -33,6 +35,7 @@ def handle_workflows():
 @app.route('/task', methods = ['POST'])
 def handle_task_post():
     #TODO: needs to check for existence in request
+    #TODO: needs to check for uniqueness in name (for this user)
     task = Task()
     task.name = request.form['name']
     task.workflow = request.form['workflow']
@@ -41,16 +44,18 @@ def handle_task_post():
                        Node.parent_node == None).fetch(100)
     # make these return an actual error code
     if len(nodes) < 1:
-        return "No valid root nodes found for this workflow." \
-            + " Are you sure this workflow exists?"
+        flash( "No valid root nodes found for this workflow." \
+            + " Are you sure this workflow exists?")
+        return "error"
     if len(nodes) > 1:
-        return "More than one root node exists for this workflow." \
-            + " Something has gone terribly wrong somewhere..."
+        flash( "More than one root node exists for this workflow." \
+            + " Something has gone terribly wrong somewhere...")
+        return "error"
     root_node = nodes[0]
     task.active_nodes.append(root_node)
     #TODO: figure out what the return value is here and check it
     task.put()
-    return ""
+    return "success"
 
 
 @app.errorhandler(404)

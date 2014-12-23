@@ -8,8 +8,10 @@ function createTask() {
              workflow: workflow,
              extra_info: extra_info},
             function(data) {
-                console.log(data);
-                //TODO: needs error checking
-                location.href = "/tasks";
+                if (data == "success") {
+                    location.href = "/tasks";
+                } else {
+                    location.href = "/task";
+                }
             });
 }

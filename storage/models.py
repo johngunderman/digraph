@@ -1,4 +1,6 @@
 import datetime
+import json
+
 from google.appengine.ext import ndb
 from google.appengine.api import users
 
@@ -14,14 +16,36 @@ class Node(ndb.Model):
   name = ndb.StringProperty(required=True)
   description = ndb.StringProperty(required=True)
 
+  def to_json(self):
+    return json.dumps(
+        {'children': children,
+         'workflow': workflow,
+         'parent_node': parent_node,
+         'name': name,
+         'description': description})
+
+
 class Workflow(ndb.Model):
   name = ndb.StringProperty()
   description = ndb.StringProperty()
   components = ndb.IntegerProperty(repeated=True)
+
+  def to_json():
+    return json.dumps(
+        {'name': name,
+         'description': description,
+         'components': components})
 
 class Task(ndb.Model):
   name = ndb.StringProperty(required=True)
   workflow = ndb.StringProperty()
   active_nodes = ndb.IntegerProperty(repeated=True)
   metadata = ndb.StringProperty()
+
+  def to_json():
+    return json.dumps(
+        {'name': name,
+         'workflow': workflow,
+         'active_nodes': [Node.get_by_id(node_id).to_json() for node_id in active_nodes]
+         'metadata': metadata})
 

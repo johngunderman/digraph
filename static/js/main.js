@@ -1,8 +1,8 @@
 
 function createTask() {
-    name = $("#name")[0].value
-    workflow = $("#workflow")[0].value
-    extra_info = $("#extra-info")[0].value
+    name = $("#name").val();
+    workflow = $("#workflow").val();
+    extra_info = $("#extra-info").val();
     $.post( "/task",
             {name: name,
              workflow: workflow,

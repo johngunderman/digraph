@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, flash
+import json
 
 from storage.models import Node, Workflow, Task
 
@@ -8,6 +9,20 @@ app = Flask(__name__, static_url_path="/static")
 app.config['DEBUG'] = True
 #TODO: configure this via flag
 app.secret_key = 'test-secret'
+
+#load some fake data (TEST ONLY)
+node = Node(name='foo',
+            description='test node')
+node.put()
+workflow = Workflow(name="test workflow",
+                    description="test only workflow",
+                    components=[node.key.integer_id()])
+workflow.put()
+task = Task(name='order 1',
+            workflow='test workflow',
+            active_nodes=[node.key.integer_id()],
+            metadata='test task')
+task.put()
 
 
 @app.route('/', methods = ['GET'])
@@ -31,6 +46,17 @@ def handle_tasks():
 @app.route('/workflows', methods = ['GET'])
 def handle_workflows():
     return render_template("workflows.html")
+
+
+# JSON API BELOW
+
+@app.route('/tasks/json', methods = ['GET'])
+def handle_tasks_json():
+    return json.dumps(
+        [task.to_json() for task in Task.query().fetch(100)])
+
+
+# POST METHODS BELOW
 
 @app.route('/task', methods = ['POST'])
 def handle_task_post():

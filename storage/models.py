@@ -11,18 +11,18 @@ from google.appengine.api import users
 
 class Node(ndb.Model):
   children = ndb.IntegerProperty(repeated=True)
-  workflow = ndb.StringProperty()
   parent_node = ndb.KeyProperty(kind='Node')
   name = ndb.StringProperty(required=True)
   description = ndb.StringProperty(required=True)
 
   def to_json(self):
-    return json.dumps(
-        {'children': children,
-         'workflow': workflow,
-         'parent_node': parent_node,
-         'name': name,
-         'description': description})
+    return json.dumps(self.to_dict())
+
+  def to_dict(self):
+    return {'children': self.children,
+          'parent_node': self.parent_node,
+          'name': self.name,
+          'description': self.description}
 
 
 class Workflow(ndb.Model):
@@ -30,11 +30,11 @@ class Workflow(ndb.Model):
   description = ndb.StringProperty()
   components = ndb.IntegerProperty(repeated=True)
 
-  def to_json():
+  def to_json(self):
     return json.dumps(
-        {'name': name,
-         'description': description,
-         'components': components})
+        {'name': self.name,
+         'description': self.description,
+         'components': self.components})
 
 class Task(ndb.Model):
   name = ndb.StringProperty(required=True)
@@ -42,10 +42,11 @@ class Task(ndb.Model):
   active_nodes = ndb.IntegerProperty(repeated=True)
   metadata = ndb.StringProperty()
 
-  def to_json():
+  def to_json(self):
     return json.dumps(
-        {'name': name,
-         'workflow': workflow,
-         'active_nodes': [Node.get_by_id(node_id).to_json() for node_id in active_nodes]
-         'metadata': metadata})
+        {'name': self.name,
+         'workflow': self.workflow,
+         'active_nodes':
+            [Node.get_by_id(node_id).to_dict() for node_id in self.active_nodes],
+         'metadata': self.metadata})
 

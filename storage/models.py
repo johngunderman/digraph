@@ -10,7 +10,7 @@ from google.appengine.api import users
 # more documentation can be found at https://cloud.google.com/appengine/docs/python/ndb/queries
 
 class Node(ndb.Model):
-  children = ndb.IntegerProperty(repeated=True)
+  children = ndb.KeyProperty(kind='Node', repeated=True)
   parent_node = ndb.KeyProperty(kind='Node')
   name = ndb.StringProperty(required=True)
   description = ndb.StringProperty(required=True)

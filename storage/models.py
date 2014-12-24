@@ -19,8 +19,14 @@ class Node(ndb.Model):
     return json.dumps(self.to_dict())
 
   def to_dict(self):
-    return {'children': self.children,
-          'parent_node': self.parent_node,
+    # requires two get() calls per node, so far less than ideal
+    #TODO: fix this, pull it into a separate method?
+    parent = None if parent is None or parent.get() is None \
+        else self.parent_node.get().to_dict()
+    children = [None if key is None or key.get() is None
+                else key.get().to_dict() for key in self.children]
+    return {'children': children,
+          'parent_node': parent,
           'name': self.name,
           'description': self.description}
 
@@ -28,25 +34,32 @@ class Node(ndb.Model):
 class Workflow(ndb.Model):
   name = ndb.StringProperty()
   description = ndb.StringProperty()
-  components = ndb.IntegerProperty(repeated=True)
+  components = ndb.KeyProperty(kind='Node', repeated=True)
 
   def to_json(self):
-    return json.dumps(
-        {'name': self.name,
-         'description': self.description,
-         'components': self.components})
+    return json.dumps(self.to_dict())
+
+  def to_dict(self):
+    components = [None if key is None or key.get() is None
+                else key.get().to_dict() for key in self.components]
+    return {'name': self.name,
+          'description': self.description,
+          'components': components}
 
 class Task(ndb.Model):
   name = ndb.StringProperty(required=True)
   workflow = ndb.StringProperty()
-  active_nodes = ndb.IntegerProperty(repeated=True)
+  active_nodes = ndb.KeyProperty(kind='Node', repeated=True)
   metadata = ndb.StringProperty()
 
   def to_json(self):
-    return json.dumps(
-        {'name': self.name,
-         'workflow': self.workflow,
-         'active_nodes':
-            [Node.get_by_id(node_id).to_dict() for node_id in self.active_nodes],
-         'metadata': self.metadata})
+    return json.dumps(self.to_dict())
+
+  def to_dict(self):
+    active_nodes = [None if key is None or key.get() is None
+                else key.get().to_dict() for key in self.active_nodes]
+    return {'name': self.name,
+            'workflow': self.workflow,
+            'active_nodes': active_nodes,
+            'metadata': self.metadata}
 

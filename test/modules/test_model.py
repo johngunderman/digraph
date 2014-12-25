@@ -20,6 +20,15 @@ class ModelTestCase(unittest.TestCase):
     def tearDown(self):
         self.testbed.deactivate()
 
+    def testModelNode_to_json(self):
+        node = Node(name='test',
+                    description='test node',
+                    parent_node=None,
+                    #TODO: test that nodes cannot be their own children
+                    children=[ndb.Key('Node', 2)])
+        node.put()
+        node.to_json()
+
     def testModelWorkflow_to_json(self):
         workflow = Workflow(name='test',
                             description='foo',

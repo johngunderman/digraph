@@ -21,7 +21,7 @@ class Node(ndb.Model):
   def to_dict(self):
     # requires two get() calls per node, so far less than ideal
     #TODO: fix this, pull it into a separate method?
-    parent = None if parent is None or parent.get() is None \
+    parent = None if self.parent_node is None or self.parent_node.get() is None \
         else self.parent_node.get().to_dict()
     children = [None if key is None or key.get() is None
                 else key.get().to_dict() for key in self.children]

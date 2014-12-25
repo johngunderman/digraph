@@ -16,6 +16,25 @@ function createTask() {
             });
 }
 
+// the node related functions below should be moved into a workflow specific
+// js file.
+oneNodeFormHtml = "";
+function cacheOneNodeForm() {
+    oneNodeFormHtml = $("#one-node-form").parent().html();
+    $("#parent-step-div").next().remove();
+    $("#parent-step-div").remove();
+    $("#remove-node-form-button").remove();
+
+}
+
+function addNodeForm() {
+    $("#all-node-form").append(oneNodeFormHtml);
+    // if we only have two nodes, the second must depend on the first
+    if ($("#all-node-form").children().size() == 2) {
+        var rootName = $($("input[name^=node-name]")[0]).val();
+        $("input[name^=node-parent]").val(rootName);
+    }
+}
 
 // adapted from
 // http://stackoverflow.com/questions/5180382/convert-json-data-to-a-html-table

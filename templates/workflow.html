@@ -10,42 +10,63 @@
 <h1>Create New Workflow</h1>
 <br>
 <div class="main-content">
+<form>
 <div class="input-group align-left">
   <span class="input-group-addon">Name:</span>
-  <input type="text" id="name" class="form-control" placeholder="Name of the Workflow">
+  <input type="text" name="name" class="form-control" placeholder="Name of the Workflow">
 </div>
 <br>
 <div class="input-group align-left">
   <span class="input-group-addon">Description:</span>
-  <input type="text" id="description" class="form-control"
+  <input type="text" name="description" class="form-control"
   placeholder="Description of the Workflow">
 </div>
 <br>
-<div class="jumbotron">
-  <div class="input-group align-left">
+<script>
+window.onload = function() {
+    cacheOneNodeForm();
+    $("#remove-node-form-button").click(
+        function(e) { $(e.target).parent(".form-row").remove() });
+}
+</script>
+<div id="all-node-form">
+<div id="one-node-form" class="jumbotron">
+<div class="input-group align-left">
   <span class="input-group-addon">Name:</span>
-  <input type="text" id="node-name" class="form-control"
-    placeholder="Name of the Step">
+  <input type="text" name="node-name[]" class="form-control"
+  placeholder="Name of the Step">
 </div>
 <br>
 <div class="input-group align-left">
   <span class="input-group-addon">Description:</span>
-  <input type="text" id="node-description" class="form-control"
+  <input type="text" name="node-description[]" class="form-control"
   placeholder="Description of the Step">
 </div>
 <br>
+<div id= "parent-step-div" class="input-group align-left">
+  <span class="input-group-addon">Follows Step:</span>
+  <input type="text" name="node-parent[]" class="form-control"
+  placeholder="Previous Step">
+</div>
+<br>
 <div>
-  <button type="button" class="btn btn-default btn-lg" onclick="createWorkflow()">
+  <button type="button" class="btn btn-default btn-lg" onclick="addNodeForm()">
   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
   Add Additional Step
   </button>
+  <button type="button" class="btn btn-default btn-lg" id="remove-node-form-button">
+  <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+  Delete Step
+  </button>
 </div>
-</div>
+</div> <!-- end one-node-form  -->
+</div> <!-- end all-node-form -->
 <div>
   <button type="button" class="btn btn-default btn-lg" onclick="createWorkflow()">
   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
   Create Workflow!
   </button>
 </div>
+</form>
 </div> <!-- end main-content -->
 {% endblock %}

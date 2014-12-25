@@ -43,20 +43,24 @@ window.onload = function() {
   placeholder="Description of the Step">
 </div>
 <br>
-<div id= "parent-step-div" class="input-group align-left">
+<div id= "parent-step-div" class="input-group align-left" style="display:none">
   <span class="input-group-addon">Follows Step:</span>
   <input type="text" name="node-parent[]" class="form-control"
   placeholder="Previous Step">
 </div>
-<br>
 <div>
+  <div id="remove-node-button-div" style="display:none">
+  <br>
+  <button type="button" class="btn btn-danger btn-lg" id="remove-node-form-button">
+  <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+  Delete Step
+  </button>
+  <br>
+  <br>
+  </div> <!-- end remove-node-button-div -->
   <button type="button" class="btn btn-default btn-lg" onclick="addNodeForm()">
   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
   Add Additional Step
-  </button>
-  <button type="button" class="btn btn-default btn-lg" id="remove-node-form-button">
-  <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-  Delete Step
   </button>
 </div>
 </div> <!-- end one-node-form  -->

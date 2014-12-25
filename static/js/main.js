@@ -20,11 +20,11 @@ function createTask() {
 // js file.
 oneNodeFormHtml = "";
 function cacheOneNodeForm() {
-    oneNodeFormHtml = $("#one-node-form").parent().html();
-    $("#parent-step-div").next().remove();
-    $("#parent-step-div").remove();
-    $("#remove-node-form-button").remove();
-
+    // bit of a hack
+    var tempNodeForm = $($("#one-node-form").parent().clone());
+    $("#parent-step-div", tempNodeForm).css("display", "");
+    $("#remove-node-button-div", tempNodeForm).css("display","")
+    oneNodeFormHtml = tempNodeForm.html();
 }
 
 function addNodeForm() {

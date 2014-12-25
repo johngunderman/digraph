@@ -54,7 +54,6 @@ def handle_task_post():
     task.metadata = request.form['extra_info']
     nodes = Node.query(Node.workflow == task.workflow,
                        Node.parent_node == None).fetch(100)
-    # make these return an actual error code
     if len(nodes) < 1:
         flash( "No valid root nodes found for this workflow." \
             + " Are you sure this workflow exists?")

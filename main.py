@@ -8,36 +8,40 @@ from storage.models import Node, Workflow, Task
 # the App Engine WSGI application server.
 app = Flask(__name__, static_url_path="/static")
 app.config['DEBUG'] = True
-#TODO: configure this via flag
+# TODO: configure this via flag
 app.secret_key = 'test-secret'
 
 
-@app.route('/', methods = ['GET'])
+@app.route('/', methods=['GET'])
 def handle_index():
     """Return a friendly HTTP greeting."""
     return render_template("index.html")
 
-@app.route('/task', methods = ['GET'])
+
+@app.route('/task', methods=['GET'])
 def handle_task():
     return render_template("task.html")
 
-@app.route('/workflow', methods = ['GET'])
+
+@app.route('/workflow', methods=['GET'])
 def handle_workflow():
     return render_template("workflow.html")
 
-@app.route('/tasks', methods = ['GET'])
+
+@app.route('/tasks', methods=['GET'])
 def handle_tasks():
     tasks = Task.query().fetch(100)
     return render_template("tasks.html", tasks=tasks)
 
-@app.route('/workflows', methods = ['GET'])
+
+@app.route('/workflows', methods=['GET'])
 def handle_workflows():
     return render_template("workflows.html")
 
 
 # JSON API BELOW
 
-@app.route('/tasks/json', methods = ['GET'])
+@app.route('/tasks/json', methods=['GET'])
 def handle_tasks_json():
     return json.dumps(
         [task.to_json() for task in Task.query().fetch(100)])
@@ -45,10 +49,10 @@ def handle_tasks_json():
 
 # POST METHODS BELOW
 
-@app.route('/task', methods = ['POST'])
+@app.route('/task', methods=['POST'])
 def handle_task_post():
-    #TODO: needs to check for existence in request
-    #TODO: needs to check for uniqueness in name (for this user)
+    # TODO: needs to check for existence in request
+    # TODO: needs to check for uniqueness in name (for this user)
     task = Task()
     task.name = request.form['name']
     task.workflow = request.form['workflow']
@@ -56,22 +60,23 @@ def handle_task_post():
     nodes = Node.query(Node.workflow == task.workflow,
                        Node.parent_node == None).fetch(100)
     if len(nodes) < 1:
-        flash( "No valid root nodes found for this workflow." \
-            + " Are you sure this workflow exists?")
+        flash("No valid root nodes found for this workflow."
+              + " Are you sure this workflow exists?")
         return "error"
     if len(nodes) > 1:
-        flash( "More than one root node exists for this workflow." \
-            + " Something has gone terribly wrong somewhere...")
+        flash("More than one root node exists for this workflow."
+              + " Something has gone terribly wrong somewhere...")
         return "error"
     root_node = nodes[0]
     task.active_nodes.append(root_node)
-    #TODO: figure out what the return value is here and check it
+    # TODO: figure out what the return value is here and check it
     task.put()
     return "success"
 
-@app.route('/workflow', methods = ['POST'])
+
+@app.route('/workflow', methods=['POST'])
 def handle_workflow_post():
-    #TODO: verify everything before committing anything
+    # TODO: verify everything before committing anything
     #      eg. validate workflow before creating nodes
     workflow_json = request.get_json()
     node_lookup_names = []

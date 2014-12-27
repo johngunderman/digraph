@@ -6,6 +6,7 @@ from google.appengine.ext import testbed
 
 from storage.models import Node, Workflow, Task
 
+
 class ModelTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -24,7 +25,7 @@ class ModelTestCase(unittest.TestCase):
         node = Node(name='test',
                     description='test node',
                     parent_node=None,
-                    #TODO: test that nodes cannot be their own children
+                    # TODO: test that nodes cannot be their own children
                     children=[ndb.Key('Node', 2)])
         node.put()
         node.to_json()

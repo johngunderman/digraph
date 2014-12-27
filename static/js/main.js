@@ -14,7 +14,7 @@ function createTask() {
             name: node_names[i],
             description: node_descriptions[i],
             parent: node_parents[i]
-        }
+        })
     }
 
     $.post( "/task",

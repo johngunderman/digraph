@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, flash
+from cgi import escape
 import json
 
 from storage.models import Node, Workflow, Task
@@ -66,6 +67,40 @@ def handle_task_post():
     task.active_nodes.append(root_node)
     #TODO: figure out what the return value is here and check it
     task.put()
+    return "success"
+
+@app.route('/workflow', methods = ['POST'])
+def handle_workflow_post():
+    #TODO: verify everything before committing anything
+    #      eg. validate workflow before creating nodes
+    workflow_json = request.get_json()
+    node_lookup_names = []
+    # table of node names to node objects
+    node_table = {}
+    for json_node in workflow_json.nodelist:
+        node = Node()
+        node.name = json_node.name
+        node.description = json_node.description
+        # this will probably break horribly in the future if the
+        # user posts nodes in the wrong order, as it expects that parent
+        # nodes have already been committed.
+        # possibly enforce this in JS and not worry about it here?
+        if json_node.parent is not "":
+            try:
+                node.parent = node_table[json_node.parent]
+            except KeyError:
+                flash("The step " + escape(step) +
+                      " is out of order or does not exist.")
+                return "error"
+        node.put()
+        node_table[node.name] = node.key()
+
+    workflow = Workflow()
+    workflow.name = workflow_json.name
+    workflow.description = workflow.description
+    workflow.active_nodes = node_table.values()
+    workflow.metadata = workflow_json.extra_info
+    workflow.put()
     return "success"
 
 

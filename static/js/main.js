@@ -1,12 +1,27 @@
 
 function createTask() {
-    name = $("#name").val();
-    workflow = $("#workflow").val();
-    extra_info = $("#extra-info").val();
+    var name = $("#name").val();
+    var workflow = $("#workflow").val();
+    var extra_info = $("#extra-info").val();
+    var node_names = $("input[name^=node-name]");
+    var node_descriptions = $("input[name^=node-description]");
+    // the root node doesn't have a parent, so add an empty one
+    var node_parents = [""].concat($("input[name^=node-parent]"));
+
+    var nodelist = [];
+    for (var i in node_names) {
+        nodelist.push({
+            name: node_names[i],
+            description: node_descriptions[i],
+            parent: node_parents[i]
+        }
+    }
+
     $.post( "/task",
             {name: name,
              workflow: workflow,
-             extra_info: extra_info},
+             extra_info: extra_info,
+             nodelist: nodelist},
             function(data) {
                 if (data == "success") {
                     location.href = "/tasks";

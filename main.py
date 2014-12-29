@@ -91,12 +91,14 @@ def handle_workflow_post():
         # nodes have already been committed.
         # possibly enforce this in JS and not worry about it here?
         if json_node.parent is not "":
-            try:
-                node.parent = node_table[json_node.parent]
-            except KeyError:
-                flash("The step " + escape(step) +
-                      " is out of order or does not exist.")
-                return "error"
+            # support multiple comma separated parents
+            for parent in node.split(',')
+                try:
+                    node.parent_nodes.append(node_table[parent.strip()])
+                except KeyError:
+                    flash("The step " + escape(parent) +
+                          " is out of order or does not exist.")
+                    return "error"
         node.put()
         node_table[node.name] = node.key()
 

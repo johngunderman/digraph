@@ -13,7 +13,7 @@ from google.appengine.api import users
 
 class Node(ndb.Model):
     children = ndb.KeyProperty(kind='Node', repeated=True)
-    parent_node = ndb.KeyProperty(kind='Node')
+    parent_nodes = ndb.KeyProperty(kind='Node', repeated=True)
     name = ndb.StringProperty(required=True)
     description = ndb.StringProperty(required=True)
 

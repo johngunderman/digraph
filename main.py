@@ -92,7 +92,7 @@ def handle_workflow_post():
         # possibly enforce this in JS and not worry about it here?
         if json_node.parent is not "":
             # support multiple comma separated parents
-            for parent in node.split(',')
+            for parent in node.split(','):
                 try:
                     node.parent_nodes.append(node_table[parent.strip()])
                 except KeyError:
